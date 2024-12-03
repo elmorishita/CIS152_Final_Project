@@ -13,7 +13,14 @@ public class PlayerSettings {
     private boolean isOnePlayer;
     private Army PlayerOneArmy;
     private Army PlayerTwoArmy;
+    private Battle BattleResults;
     // Getters / Setters
+    public Battle getBattleResults() {
+        return BattleResults;
+    }
+    public void setBattleResults(Battle BattleResults) {
+        this.BattleResults = BattleResults;
+    }
     public boolean getIsOnePlayer() {
         return isOnePlayer;
     }

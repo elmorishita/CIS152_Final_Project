@@ -44,6 +44,11 @@ public class KommandQuest {
         armySelection.setVisible(true);
     }
     
+    public void openBattleFront(){
+        BattleFront battleFront = new BattleFront(this);
+        battleFront.setVisible(true);
+    }
+    
     public PlayerSettings getPlayerSettings(){
         return playerSettings;
     }

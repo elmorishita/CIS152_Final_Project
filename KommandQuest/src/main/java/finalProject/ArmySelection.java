@@ -24,7 +24,7 @@ public class ArmySelection extends javax.swing.JFrame {
      */
     public ArmySelection(KommandQuest driver) {
         this.driver = driver;
-        setSize(600, 500);
+        setSize(632, 435);
         setLocationRelativeTo(null);
         initComponents();
         setIsOnePlayer(driver.getPlayerSettings().getIsOnePlayer());
@@ -529,18 +529,18 @@ public class ArmySelection extends javax.swing.JFrame {
             // Only allow numeric characters, consume all else, throws NumberFormatException if textbox is empty
             if(!(Character.isDigit(charEntered)) || ArmySelectionSizeValueOne.getText().length() >= 4){
                 evt.consume();
-                return;
             }
             // Check if user entered anything less than 1 (0, 00, 0000, -1, ect...)
             final int MIN_ARMY_SIZE = 1;
-            if(Integer.parseInt(ArmySelectionSizeValueOne.getText()) < MIN_ARMY_SIZE){
+            if(Integer.parseInt(ArmySelectionSizeValueOne.getText()) < MIN_ARMY_SIZE || ArmySelectionSizeValueOne.getText().length() < 1){
                 throw new NumberFormatException();
             }
             // Validation passes, enable submit button (gets disabled when there's no size) and remove validation label (also only gets added if user enters something below 0)
             SubmitSelectionBtn.setEnabled(true);
             PlayOneSizeErrorLabel.setText("");
             // Update newly changed Army selection
-            UpdateArmySelection(ArmySelComboPlayOne.getSelectedItem().toString(), ArmySelComboPlayTwo.getSelectedItem().toString(), Integer.parseInt(ArmySelectionSizeValueOne.getText()), Integer.parseInt(ArmySelectionSizeValueTwo.getText()));
+            boolean isFirstTime = false;
+            UpdateArmySelection(ArmySelComboPlayOne.getSelectedItem().toString(), ArmySelComboPlayTwo.getSelectedItem().toString(), Integer.parseInt(ArmySelectionSizeValueOne.getText()), Integer.parseInt(ArmySelectionSizeValueTwo.getText()), isFirstTime);
             // Display new army stats
             UpdateAttributeDisplay();
         } catch (NumberFormatException ex){
@@ -572,18 +572,18 @@ public class ArmySelection extends javax.swing.JFrame {
             // Only allow numeric characters, consume all else, throws NumberFormatException if textbox is empty
             if(!(Character.isDigit(charEntered)) || ArmySelectionSizeValueTwo.getText().length() >= 4){ // if there are more than 4 chars?
                 evt.consume();
-                return;
             }
             // Check if user entered anything less than 1 (0, 00, 0000, -1, ect...)
             final int MIN_ARMY_SIZE = 1;
-            if(Integer.parseInt(ArmySelectionSizeValueTwo.getText()) < MIN_ARMY_SIZE){
+            if(Integer.parseInt(ArmySelectionSizeValueTwo.getText()) < MIN_ARMY_SIZE || ArmySelectionSizeValueTwo.getText().length() < 1){
                 throw new NumberFormatException();
             }
             // Validation passes, enable submit button (gets disabled when there's no size) and remove validation label (also only gets added if user enters something below 0)
             SubmitSelectionBtn.setEnabled(true);
             PlayTwoSizeErrorLabel.setText("");
             // Update newly changed Army selection
-            UpdateArmySelection(ArmySelComboPlayOne.getSelectedItem().toString(), ArmySelComboPlayTwo.getSelectedItem().toString(), Integer.parseInt(ArmySelectionSizeValueOne.getText()), Integer.parseInt(ArmySelectionSizeValueTwo.getText()));
+            boolean isFirstTime = false;
+            UpdateArmySelection(ArmySelComboPlayOne.getSelectedItem().toString(), ArmySelComboPlayTwo.getSelectedItem().toString(), Integer.parseInt(ArmySelectionSizeValueOne.getText()), Integer.parseInt(ArmySelectionSizeValueTwo.getText()), isFirstTime);
             // Display new army stats
             UpdateAttributeDisplay();
         } catch (NumberFormatException ex){
@@ -600,7 +600,8 @@ public class ArmySelection extends javax.swing.JFrame {
     private void ArmySelComboPlayOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArmySelComboPlayOneActionPerformed
         if(evt.getActionCommand() == "comboBoxChanged"){
             // Update newly changed Army selection
-            UpdateArmySelection(ArmySelComboPlayOne.getSelectedItem().toString(), ArmySelComboPlayTwo.getSelectedItem().toString(), Integer.parseInt(ArmySelectionSizeValueOne.getText()), Integer.parseInt(ArmySelectionSizeValueTwo.getText()));
+            boolean isFirstTime = false;
+            UpdateArmySelection(ArmySelComboPlayOne.getSelectedItem().toString(), ArmySelComboPlayTwo.getSelectedItem().toString(), Integer.parseInt(ArmySelectionSizeValueOne.getText()), Integer.parseInt(ArmySelectionSizeValueTwo.getText()), isFirstTime);
             // Display new army stats
             UpdateAttributeDisplay();
         }
@@ -611,24 +612,25 @@ public class ArmySelection extends javax.swing.JFrame {
     private void ArmySelComboPlayTwoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArmySelComboPlayTwoActionPerformed
         if(evt.getActionCommand() == "comboBoxChanged"){
             // Update newly changed Army selection
-            UpdateArmySelection(ArmySelComboPlayOne.getSelectedItem().toString(), ArmySelComboPlayTwo.getSelectedItem().toString(), Integer.parseInt(ArmySelectionSizeValueOne.getText()), Integer.parseInt(ArmySelectionSizeValueTwo.getText()));
+            boolean isFirstTime = false;
+            UpdateArmySelection(ArmySelComboPlayOne.getSelectedItem().toString(), ArmySelComboPlayTwo.getSelectedItem().toString(), Integer.parseInt(ArmySelectionSizeValueOne.getText()), Integer.parseInt(ArmySelectionSizeValueTwo.getText()), isFirstTime);
             // Display new army stats
             UpdateAttributeDisplay();
         }
     }//GEN-LAST:event_ArmySelComboPlayTwoActionPerformed
 
     private void ArmySelectionSizeValueOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArmySelectionSizeValueOneActionPerformed
-        System.out.println("TextChange: " + evt.getActionCommand());
+        System.out.println("TextChange: " + evt.getActionCommand()); // delete later
     }//GEN-LAST:event_ArmySelectionSizeValueOneActionPerformed
 
     private void SubmitSelectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitSelectionBtnActionPerformed
         // Set new Amry settings 
-        KommandQuest drive = new KommandQuest();
-        drive.getPlayerSettings().setIsOnePlayer(getIsOnePlayer());
-        drive.getPlayerSettings().setPlayerOneArmy(getPlayerOneArmy());
-        drive.getPlayerSettings().setPlayerTwoArmy(getPlayerTwoArmy());
-        // Go to Battle!
-        
+        driver.getPlayerSettings().setIsOnePlayer(getIsOnePlayer());
+        driver.getPlayerSettings().setPlayerOneArmy(getPlayerOneArmy());
+        driver.getPlayerSettings().setPlayerTwoArmy(getPlayerTwoArmy());
+        // Begin Battle
+        driver.openBattleFront();
+        this.dispose();
     }//GEN-LAST:event_SubmitSelectionBtnActionPerformed
     
     private void SetModel(){
@@ -650,9 +652,10 @@ public class ArmySelection extends javax.swing.JFrame {
             // Disable player 2 selections and update label
             ArmySelComboPlayTwo.setEnabled(false);
             ArmySelectionSizeValueTwo.setEnabled(false);
-            PlayerTwoPanel. // set Title on border? 
+            PlayerTwoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Computer"));
         }
-        UpdateArmySelection(ArmySelComboPlayOne.getSelectedItem().toString(), ArmySelComboPlayTwo.getSelectedItem().toString(), DEFAULT_ARMY_SIZE, playerTwoSize);
+        boolean isFirstTime = true;
+        UpdateArmySelection(ArmySelComboPlayOne.getSelectedItem().toString(), ArmySelComboPlayTwo.getSelectedItem().toString(), DEFAULT_ARMY_SIZE, playerTwoSize, isFirstTime);
         // Display army stats
         UpdateAttributeDisplay();
     }
@@ -662,7 +665,6 @@ public class ArmySelection extends javax.swing.JFrame {
         final int MIN = 1;
         final int MAX = 9999;
         int randomInt = rand.nextInt(MAX + 1 - MIN) + MIN;
-        System.out.println("Randome Army Size: " + randomInt);
         return randomInt;
     }
     
@@ -671,17 +673,16 @@ public class ArmySelection extends javax.swing.JFrame {
         final int MIN = 0;
         final int MAX = 8;
         int randomInt = rand.nextInt(MAX + 1 - MIN) + MIN;
-        System.out.println("Randome Army Type Index: " + randomInt);
         return randomInt;
     }
     
-    private void UpdateArmySelection(String PlayOneArmyType, String PlayTwoArmyType, int PlayerOneArmySize, int PlayerTwoArmySize){
+    private void UpdateArmySelection(String PlayOneArmyType, String PlayTwoArmyType, int PlayerOneArmySize, int PlayerTwoArmySize, boolean isFirstTime){
         // AllAvailableTypes & AllAvailableArmies share the same index, so first get the index based on the player selection (Humans are default)
         List<String> armyTypes = getAllAvailableTypes();
         int playOneArmyTypeIndex = armyTypes.indexOf(PlayOneArmyType);
         int playTwoArmyTypeIndex = armyTypes.indexOf(PlayTwoArmyType);
         // Assign a random Army Type if only One Player
-        if(getIsOnePlayer()){
+        if(getIsOnePlayer() && isFirstTime){
             playTwoArmyTypeIndex = GetRandomArmyTypeIndex();
             ArmySelComboPlayTwo.setSelectedIndex(playTwoArmyTypeIndex);
         }

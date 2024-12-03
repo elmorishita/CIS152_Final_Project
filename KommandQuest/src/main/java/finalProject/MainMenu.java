@@ -10,7 +10,7 @@ public class MainMenu extends javax.swing.JFrame {
     // Constructor
     public MainMenu(KommandQuest driver) {
         this.driver = driver;
-        setSize(600, 500);
+        setSize(632, 435);
         setLocationRelativeTo(null);
         initComponents();
     }
@@ -97,9 +97,6 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void BeginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BeginBtnActionPerformed
         // Closes current window, opens the Army Selection Window
-//        ArmySelection armySelection = new ArmySelection(getPlayerRadioOne().isSelected());
-//        this.setVisible(false);
-//        armySelection.setVisible(true);
         driver.getPlayerSettings().setIsOnePlayer(getPlayerRadioOne().isSelected());
         driver.openArmySelection();
         this.dispose();
