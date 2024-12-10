@@ -62,7 +62,9 @@ public class KommandQuest {
         PlayAgain playAgain = new PlayAgain(this, battleFront);
         playAgain.setVisible(true);
     }
-    
+    /** 
+    * PlayerSettings holds the KommandQuest data throughout the windows
+    */
     public PlayerSettings getPlayerSettings(){
         return playerSettings;
     }

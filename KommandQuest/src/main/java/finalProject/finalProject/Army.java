@@ -10,19 +10,16 @@ public class Army {
     private String ArmyType;
     // Constructor
     public Army(String armyType, int armySize){
-        this.setAttributes(armySize);
         this.setArmyType(armyType);
+        this.setAttributes(armySize, armyType);
     }
     // Methods
-    public void setEnemyArmySize() {
+    /** setAttributes sets the atk and def for each soldier in an army
+    * @param int size
+    */
+    public void setAttributes(int size, String armyType) {
         Random rand = new Random();
-        final int MIN = 5;
-        final int MAX = 20;
-        setArmySize(rand.nextInt(MAX + 1 - MIN) + MIN);
-    }
-    public void setAttributes(int size) {
-        Random rand = new Random();
-        final int MIN = 5;
+        final int MIN = getMinAttributeByType(armyType);
         final int MAX = 226;
         ArrayList<Soldier> tempArmy = new ArrayList<Soldier>();
         for(int i = 0; i < size; i++) {
@@ -31,6 +28,44 @@ public class Army {
         }
         setArmy(tempArmy);
     }
+    /** Gets the minimum attribute for each army type, with humans being the default.  
+     *  Also learned that Java doesn't like break; statements in combination with return; statements
+    * @param String armyType
+    * @return int 
+    */
+    public int getMinAttributeByType(String armyType){
+        final int HUMAN_MIN = 10;
+        final int SKELETON_MIN = 2;
+        final int ALIEN_MIN = 20;
+        final int ZOMBIE_MIN = 4;
+        final int ORC_MIN = 8;
+        final int GOBLIN_MIN = 6;
+        final int JEDI_MIN = 40;
+        final int SITH_MIN = 35;
+        switch(armyType){
+            case "Humans": 
+                return HUMAN_MIN; 
+            case "Skeletons": 
+                return SKELETON_MIN;
+            case "Aliens": 
+                return ALIEN_MIN;
+            case "Zombies": 
+                return ZOMBIE_MIN;
+            case "Orcs": 
+                return ORC_MIN;
+            case "Goblins": 
+                return GOBLIN_MIN;
+            case "Jedi": 
+                return JEDI_MIN;
+            case "Sith": 
+                return SITH_MIN;
+        }
+        return HUMAN_MIN; // default
+    }
+    /** Gets the average atk of an Army
+    * @param ArrayList<Soldier>
+    * @return String 
+    */
     public String getAverageAtk(ArrayList<Soldier> army) {
         try {
             if(!army.isEmpty()) {
@@ -46,6 +81,10 @@ public class Army {
             return ex.getMessage();
         }
     }
+    /** Gets the average def of an Army
+    * @param ArrayList<Soldier>
+    * @return String 
+    */
     public String getAverageDef(ArrayList<Soldier> army) {
         try {
             if(!army.isEmpty()) {

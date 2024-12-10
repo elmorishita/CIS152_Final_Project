@@ -7,7 +7,6 @@ import java.util.Random;
 
 public class Battle {
     // Members
-
     private boolean IsPlayerFirst = false;
     private boolean DidPlayerOneWin = false;
     private boolean IsTie = false;
@@ -15,6 +14,9 @@ public class Battle {
     private int EnemyWinCount;
     private boolean BattleIsOngoing = true;
     // Methods
+    /** BeginBattle
+    * @return LinkedHashMap
+    */
     public LinkedHashMap BeginBattle(Army playerArmy, Army enemyArmy, boolean IsPlayerFirst) {
         LinkedList<Soldier> playerArmyInOrder = OrderArmy(playerArmy.getArmy());
         LinkedList<Soldier> enemyArmyInOrder = OrderArmy(enemyArmy.getArmy());
@@ -49,21 +51,11 @@ public class Battle {
         }
         return remainingSoldiers;
     }
-    
-    private String DisplayResults(int playerArmyLeft, int enemyArmyLeft, int turns, String playerName) {
-        String combatNoise = "   CLASH\n\n                CLANG\n\n      BOOM\n";
-        String results = combatNoise + " " + playerName + " army remaining: " + playerArmyLeft + "\n Enemy army remaining: " + enemyArmyLeft + "\n Total turns taken: " + turns;
-        if (getIsTie()) {
-            return results + "\n\n ** :\\ TIE **\n";
-        }
-        if (getDidPlayerOneWin()) {
-            return results + "\n\n ** :) VICTORY **\n";
-        } else {
-            return results + "\n\n ** :( DEFEAT **\n";
-        }
-    }
-
-    private boolean IsStrikeEffective(Soldier attacker, Soldier defender) {
+    /** Determines if a soldier has been defeated via the difference of attackers atk and defenders def
+    * @param Soldier attacker, Soldier defender
+    * @return Boolean
+    */
+    public boolean IsStrikeEffective(Soldier attacker, Soldier defender) {
         final int DEATH = 0;
         defender.setDef(defender.getDef() - attacker.getAtk());
         if (defender.getDef() <= DEATH) {
@@ -72,11 +64,15 @@ public class Battle {
             return false;
         }
     }
-
-    private boolean isPlayerTurn(int turn) {
+    /** isPlayerTurn checks for a players turn by using modulus to determine if the turn count is even or odd
+    * @param int turn
+    */
+    public boolean isPlayerTurn(int turn) {
         return turn % 2 == 0;
     }
-
+    /** CheckForVictor Checks to see which player/computer won or tied
+    * @param int playersLeft, int enemiesLeft, int finished
+    */
     private void CheckForVictor(int playersLeft, int enemiesLeft, int finished) {
         if (playersLeft == finished && enemiesLeft == finished) {
             setIsTie(true);
@@ -88,8 +84,11 @@ public class Battle {
             setDidPlayerOneWin(true);
         }
     }
-
-    private LinkedList<Soldier> OrderArmy(ArrayList<Soldier> army) {
+    /** Returns a linkedList of sorted soldiers.
+     * @param ArrayList<Soldier>
+     * @return LinkedList
+     */
+    public LinkedList<Soldier> OrderArmy(ArrayList<Soldier> army) {
         LinkedList<Soldier> newOrder = new LinkedList<Soldier>();
         selectionSort(army);
         for (Soldier soldier : army) {
@@ -97,13 +96,9 @@ public class Battle {
         }
         return newOrder;
     }
-
-    /**
-     * Using the Selection Sort algorithm, selectionSort sets the army in order
-     * by comparing each soldiers rank
-     *
-     * @param army
-     */
+    /** Using the Selection Sort algorithm, selectionSort sets the army in order by comparing each soldiers rank
+    * @param ArrayList<Soldier>
+    */
     private static void selectionSort(ArrayList<Soldier> army) {
         for (int i = 0; i < army.size() - 1; i++) {
             int index = i;
@@ -117,98 +112,77 @@ public class Battle {
             army.set(i, smallerSoldier);
         }
     }
-
-    public boolean continueGame(char playerChoice) {
-        if (playerChoice == 'n' || playerChoice == 'N') {
-            return false;
-        } else {
-            return true;
-        }
-    }
     // Getters/Setters
-
     /**
      * @return the battleIsOngoing
      */
     public boolean getBattleIsOngoing() {
         return BattleIsOngoing;
     }
-
     /**
      * @param battleIsOngoing the battleIsOngoing to set
      */
     public void setBattleIsOngoing(boolean battleIsOngoing) {
         BattleIsOngoing = battleIsOngoing;
     }
-
     /**
      * @return the isTie
      */
     public boolean getIsTie() {
         return IsTie;
     }
-
     /**
      * @param isTie the isTie to set
      */
     public void setIsTie(boolean isTie) {
         IsTie = isTie;
     }
-
     /**
      * @return the isPlayerFirst
      */
     public boolean getIsPlayerFirst() {
         return IsPlayerFirst;
     }
-
     /**
      * @param isPlayerFirst the isPlayerFirst to set
      */
     public void setIsPlayerFirst(boolean isPlayerFirst) {
         IsPlayerFirst = isPlayerFirst;
     }
-
     /**
      * @return the didPlayerWin
      */
     public boolean getDidPlayerOneWin() {
         return DidPlayerOneWin;
     }
-
     /**
      * @param didPlayerWin the didPlayerWin to set
      */
     public void setDidPlayerOneWin(boolean didPlayerOneWin) {
         DidPlayerOneWin = didPlayerOneWin;
     }
-
     /**
      * @return the playerWinCount
      */
     public int getPlayerWinCount() {
         return PlayerWinCount;
     }
-
     /**
      * @param playerWinCount the playerWinCount to set
      */
     public void setPlayerWinCount(int playerWinCount) {
         PlayerWinCount = playerWinCount;
     }
-
     /**
      * @return the enemyWinCount
      */
     public int getEnemyWinCount() {
         return EnemyWinCount;
     }
-
     /**
      * @param enemyWinCount the enemyWinCount to set
      */
     public void setEnemyWinCount(int enemyWinCount) {
         EnemyWinCount = enemyWinCount;
     }
-
 }
